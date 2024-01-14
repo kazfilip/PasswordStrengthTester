@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
     checkStrength();
     }
@@ -14,7 +15,7 @@ public class Main {
         String password = getPassword();
         File file = new File("src/10-million-password-list-top-1000000.txt");
         Scanner scanner = new Scanner(file);
-        int desiredLength = 8;
+        final int desiredLength = 8;
         if (file.exists()){
             boolean password_found = false;
             while (scanner.hasNext()){
@@ -27,12 +28,14 @@ public class Main {
                 System.out.println("Your password is to easy to crack!");
                 System.out.println("Please choose another one.");
                 rerunStrengthChecker();
-            }else if (password.length()>=desiredLength){
-                checkCharacters(password);
             }else {
-                System.out.println("Your password is to short!");
-                System.out.println("Please choose another one.");
-                rerunStrengthChecker();
+                if (password.length()>=desiredLength){
+                    checkCharacters(password);
+                }else {
+                    System.out.println("Your password is to short!");
+                    System.out.println("Please choose another one.");
+                    rerunStrengthChecker();
+                }
             }
         }else System.out.println("File not found");
 
@@ -42,7 +45,6 @@ public class Main {
         int lower_Case=0;
         int special=0;
         int digits=0;
-
         for (char c : password.toCharArray()){
             if (Character.isUpperCase(c)){
                 upper_Case++;
@@ -52,7 +54,10 @@ public class Main {
             }
             else if (Character.isDigit(c)){
                 digits++;
-            }else special++;
+            }
+            else {
+                special++;
+            }
         }
         if (upper_Case==0){
             System.out.println("Your password should have at least one upper case character");
@@ -69,7 +74,6 @@ public class Main {
             System.out.println("Your password should have at least one digit character");
             rerunStrengthChecker();}
         else System.out.println("Your password is strong!");
-
     }
     private static void rerunStrengthChecker() throws IOException {
         String password = getPassword();
